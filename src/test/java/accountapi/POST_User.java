@@ -22,8 +22,7 @@ public class POST_User {
 
 		Response response = request.when().post(APIConstants.POST_USER_ENDPOINT);
 
-		System.out.println("Status Code: " + response.statusCode());
-		System.out.println("Body: " + response.asString());
+		response.prettyPrint();
 
 		Assertions.assertEquals(response.statusCode(), 201, "User creation failed!");
 		Assertions.assertEquals(response.jsonPath().getString("username"), "onurolmez");

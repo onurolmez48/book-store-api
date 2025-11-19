@@ -9,20 +9,19 @@ import io.restassured.specification.RequestSpecification;
 import utils.APIConstants;
 import utils.APIGlobalVariables;
 
-public class GET_AllBooks {
+public class GET_OneBook {
 
 	@Test
-	public void getAllBooks() {
-
+	public void getOneBook() {
 		RestAssured.baseURI = APIConstants.BASE_URI;
+		RequestSpecification request = RestAssured.given();
+		request.queryParam("ISBN", APIGlobalVariables.ISBN);
 
-		RequestSpecification request = RestAssured.given().header("Authorization",
-				"Bearer " + APIGlobalVariables.TOKEN);
+		Response response = request.when().get(APIConstants.BOOK);
 
-		Response response = request.when().get(APIConstants.BOOKS);
-
-		response.prettyPeek();
+		response.prettyPrint();
 
 		Assertions.assertEquals(response.statusCode(), 200);
+		Assertions.assertEquals(response.jsonPath().getString("isbn"), APIGlobalVariables.ISBN);
 	}
 }

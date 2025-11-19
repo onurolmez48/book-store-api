@@ -23,8 +23,7 @@ public class POST_GenerateToken {
 
 		Response response = request.when().post(APIConstants.POST_GENERET_TOKEN_ENDPOINT);
 
-		System.out.println("Status Code: " + response.statusCode());
-		System.out.println("Body: " + response.asString());
+		response.prettyPrint();
 
 		Assertions.assertEquals(response.statusCode(), 200);
 		Assertions.assertEquals(response.jsonPath().getString("status"), "Success");
