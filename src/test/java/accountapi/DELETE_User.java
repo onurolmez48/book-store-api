@@ -1,5 +1,8 @@
 package accountapi;
 
+import java.util.List;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import io.restassured.RestAssured;
@@ -24,5 +27,8 @@ public class DELETE_User {
 
 		System.out.println(response.statusCode());
 		response.prettyPrint();
+		List<Object> books = response.jsonPath().getList("books");
+		Assertions.assertTrue(books.isEmpty());
+		Assertions.assertEquals(0, books.size());
 	}
 }
