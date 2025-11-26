@@ -23,7 +23,7 @@ public class DELETE_User {
 
 		request.pathParam("UUID", APIGlobalVariables.USER_ID);
 
-		Response response = request.when().get(APIConstants.DELETE_USER);
+		Response response = request.when().delete(APIConstants.DELETE_USER);
 
 		System.out.println(response.statusCode());
 		response.prettyPrint();

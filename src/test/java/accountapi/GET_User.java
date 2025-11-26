@@ -3,30 +3,28 @@ package accountapi;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import base.BaseTest;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
 import utils.APIConstants;
-import utils.APIGlobalVariables;
+import utils.TokenManager;
 
-public class GET_User {
+public class GET_User extends BaseTest{
 
 	@Test
 	public void getUser() {
-		RestAssured.baseURI = APIConstants.BASE_URI;
+        String token = TokenManager.getToken();
+        String userId = "d329e635-46f9-444a-b9c9-268cec46b4b2";
 
-		RequestSpecification request = RestAssured.given().header("Authorization",
-				"Bearer " + APIGlobalVariables.TOKEN);
+        Response response = RestAssured.given()
+                .spec(requestSpec) 
+                .header("Authorization", "Bearer " + token)
+                .pathParam("UUID", userId)
+                .when()
+                .get(APIConstants.GET_USER);
 
-		request.pathParam("UUID", APIGlobalVariables.USER_ID);
-
-		Response response = request.when().get(APIConstants.GET_USER);
-
-		response.prettyPrint();
-
-		Assertions.assertEquals(response.statusCode(), 200);
-		Assertions.assertEquals(response.jsonPath().getString("username"), APIGlobalVariables.user);
-		Assertions.assertEquals(response.jsonPath().getString("userId"), APIGlobalVariables.USER_ID);
+        Assertions.assertEquals(200, response.statusCode());
+        Assertions.assertEquals("onurolmez", response.jsonPath().getString("username"));
 
 	}
 }
