@@ -5,28 +5,26 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import base.BaseTest;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import io.restassured.specification.RequestSpecification;
 import utils.APIConstants;
-import utils.APIGlobalVariables;
+import utils.TokenManager;
 
-public class DELETE_User {
+public class DELETE_User extends BaseTest {
 
 	@Test
 	public void deleteUser() {
-		RestAssured.baseURI = APIConstants.BASE_URI;
+		String token = TokenManager.getToken();
+        String userId = "d329e635-46f9-444a-b9c9-268cec46b4b2";
 
-		RequestSpecification request = RestAssured.given();
-
-		request.header("Authorization", "Bearer " + APIGlobalVariables.TOKEN);
-
-		request.pathParam("UUID", APIGlobalVariables.USER_ID);
-
-		Response response = request.when().delete(APIConstants.DELETE_USER);
-
-		System.out.println(response.statusCode());
-		response.prettyPrint();
+        Response response = RestAssured.given()
+                .spec(requestSpec) 
+                .header("Authorization", "Bearer " + token)
+                .pathParam("UUID", userId)
+                .when()
+                .delete(APIConstants.DELETE_USER);
+                
 		List<Object> books = response.jsonPath().getList("books");
 		Assertions.assertTrue(books.isEmpty());
 		Assertions.assertEquals(0, books.size());
